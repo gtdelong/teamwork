@@ -14,11 +14,10 @@ setup(
     long_description_content_type='text/markdown',  # Optional (see note above)
     url='https://github.com/gtdelong/teamwork',  # Optional
     author='Grant DeLong',  # Optional
-    author_email='ggoulae@gmail.com@example.com',  # Optional
+    author_email='ggoulae@gmail.com',  # Optional
     classifiers=[  # Optional
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
-        'Topic :: Data Science',
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6',
@@ -31,7 +30,7 @@ setup(
     package_dir={'': 'src'},  # Optional
     packages=find_packages(where='src'),  # Required
     python_requires='>=3.6, <4',
-    install_requires=install_requires=[ # Optional
+    install_requires=[ # Optional
         'pandas',
         'numpy',
         'networkx'

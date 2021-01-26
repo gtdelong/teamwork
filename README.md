@@ -13,7 +13,7 @@ The resulting care team network graphs can be used to compute the cumulative col
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install teamwork.
 
 ```bash
-pip install teamwork
+pip install -i https://test.pypi.org/simple/ teamwork==0.1.0
 ```
 
 ## Usage
