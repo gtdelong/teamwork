@@ -4,7 +4,7 @@ import sys
 # These two lines allow us to import the package from src
 src_dir = os.path.join(os.getcwd(), 'src')
 sys.path.append(src_dir)
-from experience import CareTeam
+from teamwork import CareTeam
 import pandas as pd
 
 class TestCareTeam(unittest.TestCase):

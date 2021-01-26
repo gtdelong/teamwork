@@ -25,3 +25,6 @@ def get_careteam_data(care_team):
     data['avg_cumulative_experience'] = data['cumulative_experience'] / len(care_team.care_team)#Average Cumulative Experience
     
     return data
+
+notes_with_disposition_file = '../data/notes_w_disposition.csv'
+discharges_with_disposition_file = '../data/discharges_w_disposition.csv'
