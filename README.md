@@ -1,6 +1,12 @@
 # teamwork
 
-teamwork is a Python library for identifying the members of medical care teams using EHR metadata and then calculating the cumulative collaborative experience of providers working together for each care team based on their common patients in a previous time window.
+teamwork is a Python library designed to aid in the study of medical care team collaboration. 
+
+Specifically, the library takes EHR data as input and does the following: 
+1) identifies the members of medical care teams per patient visit
+2) builds a network graph for each care team based on their common patients in the previous 90 days
+
+The resulting care team network graphs can be used to compute the cumulative collaborative experience of care teams and other metrics.
 
 ## Installation
 
@@ -35,6 +41,8 @@ care_team_list = [care_team for care_date in get_care_dates for care_team in car
 for care_team in care_team_list:
     do_something(care_team.G)
 ```
+
+A sample study can be found [here](notebooks/teamwork_study.ipynb)
 
 ## Contributors
 
