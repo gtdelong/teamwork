@@ -36,7 +36,12 @@ for care_team in care_team_list:
     do_something(care_team.G)
 ```
 
+## Contributors
 
+| Contributor|Role |
+|-|-|
+| [Henry Philofsky](https://github.com/hp2335) | Concept, Development |
+| [Grant DeLong](https://github.com/gtdelong) | Development |
 
 ## License
-[MIT](https://choosealicense.com/licenses/mit/)
+[MIT](LICENSE.txt)
