@@ -42,7 +42,7 @@ for care_team in care_team_list:
     do_something(care_team.G)
 ```
 
-A sample study can be found [here](notebooks/teamwork_study.ipynb)
+A sample study can be found [here](https://github.com/gtdelong/teamwork/blob/main/notebooks/teamwork_study.ipynb)
 
 ## Contributors
 
@@ -52,4 +52,4 @@ A sample study can be found [here](notebooks/teamwork_study.ipynb)
 | [Grant DeLong](https://github.com/gtdelong) | Developer |
 
 ## License
-[MIT](LICENSE.txt)
+[MIT](https://github.com/gtdelong/teamwork/blob/main/LICENSE.txt)
