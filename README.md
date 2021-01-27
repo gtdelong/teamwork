@@ -48,8 +48,8 @@ A sample study can be found [here](notebooks/teamwork_study.ipynb)
 
 | Contributor|Role |
 |-|-|
-| [Henry Philofsky](https://github.com/hp2335) | Concept, Development |
-| [Grant DeLong](https://github.com/gtdelong) | Development |
+| [Henry Philofsky](https://github.com/hp2335) | Concept, SME |
+| [Grant DeLong](https://github.com/gtdelong) | Developer |
 
 ## License
 [MIT](LICENSE.txt)
