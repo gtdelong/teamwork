@@ -1,10 +1,10 @@
 # teamwork
 
-teamwork is a Python library designed to aid in the study of medical care team collaboration. 
+Teamwork is a Python library designed to aid in the study of medical care team collaboration. 
 
-Specifically, the library takes EHR data as input and does the following: 
-1) identifies the members of medical care teams per patient visit
-2) builds a network graph for each care team based on their common patients in the previous 90 days
+Specifically, the library takes electronic health record encounter-level data (both discharges and notes) as inputs and does the following: 
+1) Identifies the members of medical care teams for unique patient visits based on medical note meta-data
+2) Builds a network graph for each care team based on their common patients in the previous 90 days
 
 The resulting care team network graphs can be used to compute the cumulative collaborative experience of care teams and other metrics.
 
@@ -49,7 +49,7 @@ A sample study can be found [here](https://github.com/gtdelong/teamwork/blob/mai
 | Contributor|Role |
 |-|-|
 | [Henry Philofsky](https://github.com/hp2335) | Concept, SME |
-| [Grant DeLong](https://github.com/gtdelong) | Developer |
+| [Grant DeLong](https://github.com/gtdelong) | Developer, Architect |
 
 ## License
 [MIT](https://github.com/gtdelong/teamwork/blob/main/LICENSE.txt)
