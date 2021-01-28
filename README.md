@@ -32,7 +32,7 @@ WINDOW = 90
 STEP = 2
 
 # the study runner is a generator
-get_care_dates = teamwork.TeamworkStudyRunner(notes_df, WINDOW, STEP)
+get_care_dates = TeamworkStudyRunner(notes_df, WINDOW, STEP)
 
 # gather care teams into a list
 care_team_list = [care_team for care_date in get_care_dates for care_team in care_date]
