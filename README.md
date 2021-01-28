@@ -1,4 +1,4 @@
-# teamwork
+# Teamwork
 
 Teamwork is a Python library designed to aid in the study of medical care team collaboration. 
 
@@ -13,13 +13,13 @@ The resulting care team network graphs can be used to compute the cumulative col
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install teamwork.
 
 ```bash
-pip install -i https://test.pypi.org/simple/ teamwork
+pip install teamwork
 ```
 
 ## Usage
 
 ```python
-import teamwork
+from teamwork.teamwork import TeamworkStudyRunner
 import pandas as pd
 
 # read medical notes (3 columns) into pandas DataFrame
@@ -37,9 +37,9 @@ get_care_dates = teamwork.TeamworkStudyRunner(notes_df, WINDOW, STEP)
 # gather care teams into a list
 care_team_list = [care_team for care_date in get_care_dates for care_team in care_date]
 
-# do something with the care team network graph
+# now you can do something with the care team network graph
 for care_team in care_team_list:
-    do_something(care_team.G)
+    analyze_graph(care_team.G)
 ```
 
 A sample study can be found [here](https://github.com/gtdelong/teamwork/blob/main/notebooks/teamwork_study.ipynb)
