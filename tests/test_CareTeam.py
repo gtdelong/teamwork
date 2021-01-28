@@ -2,7 +2,7 @@ import unittest
 import os
 import sys
 # These two lines allow us to import the package from src
-src_dir = os.path.join(os.getcwd(), 'src')
+src_dir = os.path.join(os.getcwd(), 'teamwork')
 sys.path.append(src_dir)
 from teamwork import CareTeam
 import pandas as pd

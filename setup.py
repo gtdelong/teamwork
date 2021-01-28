@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages
+from setuptools import setup
 import pathlib
 
 here = pathlib.Path(__file__).parent.resolve()
@@ -8,7 +8,7 @@ long_description = (here / 'README.md').read_text(encoding='utf-8')
 
 setup(
     name='teamwork',  # Required
-    version='0.1.0',  # Required
+    version='0.1.5',  # Required
     description='A Python library for building a network graph of providers in care teams from EHR data',  # Optional
     long_description=long_description,  # Optional
     long_description_content_type='text/markdown',  # Optional (see note above)
@@ -26,9 +26,9 @@ setup(
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3 :: Only',
     ],
+    license='MIT',
     keywords='team, collaboration, EHR',  # Optional
-    package_dir={'': 'src'},  # Optional
-    packages=find_packages(where='src'),  # Required
+    packages=['teamwork'],  # Required
     python_requires='>=3.6, <4',
     install_requires=[ # Optional
         'pandas',
