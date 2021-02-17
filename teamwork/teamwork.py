@@ -5,6 +5,7 @@ from itertools import combinations
 import numpy as np
 
 class TeamworkStudyRunner:
+    """Runs a teamwork study """
     def __init__(self, notes, window_in_days, step_in_days):
         notes.sort_values('date', inplace=True)
         self.notes = notes
