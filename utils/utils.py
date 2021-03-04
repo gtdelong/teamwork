@@ -28,3 +28,6 @@ def get_careteam_data(care_team):
 
 notes_with_disposition_file = '../data/notes_w_disposition.csv'
 discharges_with_disposition_file = '../data/discharges_w_disposition.csv'
+
+notes_test_file = '../data/notes_test.csv'
+notes_with_disposition_large_file = '../data/notes_w_disposition_large.csv'
