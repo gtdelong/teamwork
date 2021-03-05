@@ -12,7 +12,7 @@ def get_careteam_data(care_team):
     data['discharge_id'] = care_team.discharge_id
     
     ''' Clustering coefficient of all nodes (in a dictionary) '''
-    clustering_coefficient = nx.clustering(care_team.G)
+    clustering_coefficient = nx.clustering(care_team.G, weight='weight')
     
     ''' Average clustering coefficient with divide-by-zero check '''
     data['avg_clust'] = sum(clustering_coefficient.values()) / len(clustering_coefficient) if len(clustering_coefficient) > 0 else 0 
