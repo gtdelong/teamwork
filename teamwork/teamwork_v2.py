@@ -7,80 +7,81 @@ import numpy as np
 class TeamworkStudyRunner:
     """Runs a teamwork study """
     def __init__(self, notes, window_in_days, step_in_days):
-        notes.sort_values('date', inplace=True)
-        self.notes = notes
+#         notes.sort_values('date', inplace=True)
+#         self.notes = notes
         self.DELTA = np.timedelta64(window_in_days, 'D')
         self.STEP = np.timedelta64(step_in_days, 'D')
-        first_date = notes['date'].iloc[0] 
-        last_date = notes['date'].iloc[-1]
-        self.date_range = np.arange(first_date, last_date, self.STEP)
-        self.careteam_date_range = np.arange(first_date + self.DELTA, last_date, self.STEP)
+        self._transform_data()
+        self.discharge_id_to_index_team_dict = dict()
         self.edge_to_date_dict = dict()
         self.date_to_discharge_dict = dict()
         self.date_discharge_to_careteam_dict = dict()
         self._populate_dicts()
         self.caredate_list = []
         self._populate_caredate_list()
-    
-    def _populate_caredate_list(self):
-        for date in self.careteam_date_range:
-            discharge_ids = self.date_to_discharge_dict.get(hash_date(date),None)
-            if discharge_ids == None: continue
-#             print(type(date))
-            caredate = CareDate(self.DELTA,
-                                date, 
-                                discharge_ids, 
-                                self.edge_to_date_dict,
-                                self.date_to_discharge_dict,
-                                self.date_discharge_to_careteam_dict)
-            self.caredate_list.append(caredate)
         
-    def _populate_dicts(self):
-        for date in self.date_range:
-#             print(type(date))
-            plus_step = date + self.STEP
-            notes_for_date = self.notes.query('date >= @date & date <= @plus_step')
-            num_rows = len(notes_for_date.index)
-            if num_rows == 0: continue
-            discharge_ids_for_date = notes_for_date.discharge_id.unique()
-            self.date_to_discharge_dict.setdefault(hash_date(date),[]).extend(discharge_ids_for_date)
-            for discharge_id in discharge_ids_for_date:
-                    care_team = notes_for_date.query('discharge_id == @discharge_id').dr.unique()
-                    care_team_edges = [edge for edge in list(combinations(care_team, 2))]
-                    hashed = hash_date_discharge(date,discharge_id)
-                    self.date_discharge_to_careteam_dict[hash_date_discharge(date,discharge_id)] = (care_team,care_team_edges)
-                    for edge in care_team_edges: 
-                        hashed_edge = hash_edge(edge)
-                        self.edge_to_date_dict.setdefault(hashed_edge,[]).append(date)
+#     def _populate_dicts(self):
+#         for 
+    
+#     def _populate_caredate_list(self):
+#         for date in self.careteam_date_range:
+#             discharge_ids = self.date_to_discharge_dict.get(hash_date(date),None)
+#             if discharge_ids == None: continue
+# #             print(type(date))
+#             caredate = CareDate(self.DELTA,
+#                                 date, 
+#                                 discharge_ids, 
+#                                 self.edge_to_date_dict,
+#                                 self.date_to_discharge_dict,
+#                                 self.date_discharge_to_careteam_dict)
+#             self.caredate_list.append(caredate)
+        
+#     def _populate_dicts(self):
+#         for date in self.date_range:
+# #             print(type(date))
+#             plus_step = date + self.STEP
+#             notes_for_date = self.notes.query('date >= @date & date <= @plus_step')
+#             num_rows = len(notes_for_date.index)
+#             if num_rows == 0: continue
+#             discharge_ids_for_date = notes_for_date.discharge_id.unique()
+#             self.date_to_discharge_dict.setdefault(hash_date(date),[]).extend(discharge_ids_for_date)
+#             for discharge_id in discharge_ids_for_date:
+#                     care_team = notes_for_date.query('discharge_id == @discharge_id').dr.unique()
+#                     care_team_edges = [edge for edge in list(combinations(care_team, 2))]
+#                     hashed = hash_date_discharge(date,discharge_id)
+#                     self.date_discharge_to_careteam_dict[hash_date_discharge(date,discharge_id)] = (care_team,care_team_edges)
+#                     for edge in care_team_edges: 
+#                         hashed_edge = hash_edge(edge)
+#                         self.edge_to_date_dict.setdefault(hashed_edge,[]).append(date)
                         
     def __iter__(self):
         for care_date in self.caredate_list:
             yield care_date
             
-class CareDate:
-    def __init__(self, delta, date, discharge_ids, edge_to_date_dict,date_to_discharge_dict,date_discharge_to_careteam_dict):
-        self.DELTA = delta
-        self.date = date
-        self.discharge_ids = discharge_ids
-        self.edge_to_date_dict = edge_to_date_dict
-        self.date_to_discharge_dict = date_to_discharge_dict
-        self.date_discharge_to_careteam_dict = date_discharge_to_careteam_dict
-        self.careteam_list = []
-        self._populate_careteam_list()
+# class CareDate:
+#     def __init__(self, delta, date, discharge_ids, edge_to_date_dict,date_to_discharge_dict,date_discharge_to_careteam_dict):
+#         self.DELTA = delta
+#         self.date = date
+#         self.discharge_ids = discharge_ids
+#         self.edge_to_date_dict = edge_to_date_dict
+#         self.date_to_discharge_dict = date_to_discharge_dict
+#         self.date_discharge_to_careteam_dict = date_discharge_to_careteam_dict
+#         self.careteam_list = []
+#         self._populate_careteam_list()
         
-    def _populate_careteam_list(self):
-        for discharge_id in self.discharge_ids:
-                care_team, care_team_edges = self.date_discharge_to_careteam_dict[hash_date_discharge(self.date,discharge_id)]
-                graph = nx.Graph()
-                for edge in care_team_edges:
-                    hashed_edge = hash_edge(edge)
-                    weight = len([d for d in self.edge_to_date_dict[hashed_edge] if d < self.date and d >= self.date-self.DELTA])
-                    if weight > 0: graph.add_edge(*edge, weight=weight)                
-                self.careteam_list.append(CareTeam(discharge_id,care_team,care_team_edges,graph))
+#     def _populate_careteam_list(self):
+#         for discharge_id in self.discharge_ids:
+#                 care_team, care_team_edges = self.date_discharge_to_careteam_dict[hash_date_discharge(self.date,discharge_id)]
+#                 graph = nx.Graph()
+#                 for edge in care_team_edges:
+#                     hashed_edge = hash_edge(edge)
+#                     weight = len([d for d in self.edge_to_date_dict[hashed_edge] if d < self.date and d >= self.date-self.DELTA])
+#                     if weight > 0: graph.add_edge(*edge, weight=weight)                
+#                 self.careteam_list.append(CareTeam(discharge_id,care_team,care_team_edges,graph))
                 
-    def __iter__(self):
-        for care_team in self.careteam_list:
-            yield care_team
+#     def __iter__(self):
+#         for care_team in self.careteam_list:
+#             yield care_team
           
 class CareTeam:
     def __init__(self,discharge_id,care_team,care_team_edges,graph):
