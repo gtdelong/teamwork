@@ -1,48 +1,4 @@
-import networkx as nx
-from itertools import combinations 
-
-columns = ['visit_id',
-        'avg_clust',
-           'sum_clust',
-        'cumulative_experience',
-           'potential_edges',
-        'avg_cumulative_experience',
-        'team_edge_size',
-        'team_size']
-
-def get_output_for_row(g, visit_id, team):
-    data = {}
-    data['visit_id'] = visit_id
-    
-    ''' Clustering coefficient of all nodes (in a dictionary) '''
-    clustering_coefficient = nx.clustering(g, weight='weight')
-    
-    ''' Average clustering coefficient with divide-by-zero check '''
-    clust_sum = sum(clustering_coefficient.values())
-    clust_len = len(clustering_coefficient)
-        
-    data['avg_clust'] = clust_sum / clust_len if clust_len > 0 else 0 
-    
-    data['sum_clust'] = clust_sum
-    data['team_size'] = len(team)
-    potential_edges = len(list(combinations(team,2)))
-    data['potential_edges'] = potential_edges
-    data['team_edge_size'] = g.number_of_edges()
-    
-    experience = g.size(weight='weight') #Experience as sum of weights
-    data['cumulative_experience'] = experience - data['team_edge_size']
-    data['avg_cumulative_experience'] = data['cumulative_experience'] / potential_edges if data['team_size'] > 0 else 0
-    
-    return data
-
-discharges_datetime_file = '../data/discharges_w_datetime.csv'
-notes_datetime_file = '../data/notes_w_datetime.csv'
-
-discharges_test_file = '../data/discharges_test.csv'
-notes_test_file = '../data/notes_test.csv'
-
-test_data_dict = {   
-    0: {   'age': 75,
+data = {   0: {   'age': 75,
            'arrive_date': '2019-01-01 00:00:00',
            'date': '2019-01-01 19:15:00',
            'discharge_date': '2019-01-01',
@@ -225,5 +181,4 @@ test_data_dict = {
             'disposition': 1,
             'dr': 'Neil Mitchell',
             'id': 7,
-            'patient': 'patient5'}
-}
+            'patient': 'patient5'}}

@@ -1,21 +1,24 @@
 discharge_id,dr,date
-0,Brad Palmer,2019-01-01
-1,Albert Romero,2019-01-24
-1,Margie Meyer,2019-01-24
-1,Evan Frazier,2019-01-24
-1,Myrtle George,2019-01-24
-1,Victoria Washington,2019-01-24
-1,Brad Palmer,2019-01-25
-1,Neil Mitchell,2019-01-24
-2,Albert Romero,2019-02-14
-2,Margie Meyer,2019-02-14
-2,Evan Frazier,2019-02-14
-2,Myrtle George,2019-02-14
-6,Albert Romero,2019-04-15
-6,Margie Meyer,2019-04-15
-6,Evan Frazier,2019-04-16
-6,Myrtle George,2019-04-16
-6,Victoria Washington,2019-04-15
-6,Brad Palmer,2019-04-17
-6,Neil Mitchell,2019-04-15
-7,Neil Mitchell,2019-08-15
+0,Brad Palmer,1/1/2019 19:15
+1,Albert Romero,1/24/2019 10:19
+1,Margie Meyer,1/24/2019 17:09
+1,Evan Frazier,1/24/2019 16:48
+1,Myrtle George,1/24/2019 13:41
+1,Victoria Washington,1/24/2019 12:52
+1,Brad Palmer,1/25/2019 9:49
+1,Neil Mitchell,1/24/2019 20:52
+2,Albert Romero,2/14/2019 20:58
+2,Margie Meyer,2/14/2019 15:54
+2,Evan Frazier,2/14/2019 20:07
+2,Myrtle George,2/14/2019 18:49
+6,Albert Romero,4/16/2019 1:29
+6,Margie Meyer,4/15/2019 20:19
+6,Evan Frazier,4/16/2019 4:43
+6,Myrtle George,4/18/2019 21:23
+6,Victoria Washington,4/16/2019 7:00
+6,Brad Palmer,4/17/2019 20:27
+6,Neil Mitchell,4/15/2019 21:25
+6,Henry Philofsky,4/16/2019 1:25
+6,Grant DeLong,4/16/2019 3:25
+6,Grant DeLong,4/17/2019 3:25
+7,Neil Mitchell,8/15/2019 17:07
