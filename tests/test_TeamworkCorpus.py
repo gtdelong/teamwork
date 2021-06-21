@@ -18,11 +18,25 @@ class TestTeamworkCorpus(unittest.TestCase):
 
         # Act
         corpus = tw.TeamworkCorpus(test_df)
-        actual_teamsize = len(corpus.visit_id_to_team_dict[test_visit_id])
+        actual_teamsize = len(corpus.team_experience_dict[test_visit_id]['team'])
 
         # Assert
-        expected_teamsize = 7
+        expected_teamsize = 4
         self.assertEqual(expected_teamsize, actual_teamsize)
+        
+    def test_edge_size(self):
+        # Arrange
+        test_df = pd.DataFrame.from_dict(data, orient="index").astype(
+            {"date": "datetime64", "arrive_date": "datetime64"}
+        )
+
+        # Act
+        corpus = tw.TeamworkCorpus(test_df)
+        actual_edgesize = len(corpus.visit_id_to_edges_dict[test_visit_id])
+
+        # Assert
+        expected_edgesize = 4
+        self.assertEqual(expected_edgesize, actual_edgesize)
 
 
 # Executing the tests in the above test case class
