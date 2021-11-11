@@ -10,28 +10,41 @@ columns = ['visit_id',
         'team_edge_size',
         'team_size']
 
-def get_output_for_row(g, visit_id, team):
+def get_output_for_row(g, dx_g, visit_id, team):
     data = {}
     data['visit_id'] = visit_id
     
     ''' Clustering coefficient of all nodes (in a dictionary) '''
+    #need for both
     clustering_coefficient = nx.clustering(g, weight='weight')
+    dx_clustering_coefficient = nx.clustering(dx_g, weight='weight')
     
     ''' Average clustering coefficient with divide-by-zero check '''
+    #need for both
     clust_sum = sum(clustering_coefficient.values())
     clust_len = len(clustering_coefficient)
+    dx_clust_sum = sum(dx_clustering_coefficient.values())
+    dx_clust_len = len(dx_clustering_coefficient)
         
-    data['avg_clust'] = clust_sum / clust_len if clust_len > 0 else 0 
+    data['avg_clust'] = clust_sum / clust_len if clust_len > 0 else 0
+    data['avg_dx_clust'] = dx_clust_sum / dx_clust_len if dx_clust_len > 0 else 0
     
     data['sum_clust'] = clust_sum
+    data['sum_dx_clust'] = dx_clust_sum
+    
     data['team_size'] = len(team)
     potential_edges = len(list(combinations(team,2)))
     data['potential_edges'] = potential_edges
     data['team_edge_size'] = g.number_of_edges()
     
     experience = g.size(weight='weight') #Experience as sum of weights
+    dx_experience = dx_g.size(weight='weight') 
+    
     data['cumulative_experience'] = experience - data['team_edge_size']
+    data['cumulative_dx_experience'] = dx_experience - data['team_edge_size']
+    
     data['avg_cumulative_experience'] = data['cumulative_experience'] / potential_edges if data['team_size'] > 0 else 0
+    data['avg_cumulative_dx_experience'] = data['cumulative_dx_experience'] / potential_edges if data['team_size'] > 0 else 0
     
     return data
 

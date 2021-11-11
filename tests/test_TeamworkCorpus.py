@@ -3,7 +3,7 @@ from .context import teamwork, utils
 from teamwork import teamwork as tw
 from utils import utils as u
 import pandas as pd
-from .constants import data, test_visit_id
+from .constants import data, data_hf, test_visit_id
 
 
 class TestTeamworkCorpus(unittest.TestCase):
@@ -12,7 +12,7 @@ class TestTeamworkCorpus(unittest.TestCase):
 
     def test_team_size(self):
         # Arrange
-        test_df = pd.DataFrame.from_dict(data, orient="index").astype(
+        test_df = pd.DataFrame.from_dict(data_hf, orient="index").astype(
             {"date": "datetime64", "arrive_date": "datetime64"}
         )
 
@@ -26,7 +26,7 @@ class TestTeamworkCorpus(unittest.TestCase):
         
     def test_edge_size(self):
         # Arrange
-        test_df = pd.DataFrame.from_dict(data, orient="index").astype(
+        test_df = pd.DataFrame.from_dict(data_hf, orient="index").astype(
             {"date": "datetime64", "arrive_date": "datetime64"}
         )
 
@@ -35,7 +35,7 @@ class TestTeamworkCorpus(unittest.TestCase):
         actual_edgesize = len(corpus.visit_id_to_edges_dict[test_visit_id])
 
         # Assert
-        expected_edgesize = 4
+        expected_edgesize = 6
         self.assertEqual(expected_edgesize, actual_edgesize)
 
 
