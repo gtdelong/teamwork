@@ -1,11 +1,11 @@
 """
 teamwork
 ---------
-A library for calculating the experience of hospital care teams 
+A library for calculating the experience of hospital care teams
 using a corpus of clinical notes.
 
-The intuition is that providers who wrote clinical notes on 
-the same patient, within a given time frame, have collaborated and 
+The intuition is that providers who wrote clinical notes on
+the same patient, within a given time frame, have collaborated and
 have gained experience working together as part of the care team.
 """
 import pandas as pd
@@ -20,10 +20,10 @@ class TeamworkCorpus:
     Converts a corpus of tabular clinical note data into a
     series of network graphs. Each network graph represents
     the care team for a patient hospital visit.
-    
+   
     The nodes of the graph are the note authors, and the edges are the pairs
     of note authors who wrote a note for the same patient visit.
-    
+   
     The criteria that defines a care team are:
     - the patient hospital admission occurs after a specified window. 
     This ensures that sufficient data exists in the corpus to calculate the 
@@ -57,7 +57,7 @@ class TeamworkCorpus:
         self.visit_id_to_team_dict = dict()
         self.edge_df.apply(
             _add_edge_to_dicts, axis="columns", args=(self.edge_to_date_dict,
-                                                     self.dx_edge_to_date_dict, 
+                                                        self.dx_edge_to_date_dict, 
                                                       self.columns,)
         )
         self.team_df.apply(
@@ -91,7 +91,7 @@ class TeamworkCorpus:
         if weight < 1:
             return None
         return {"source": dr_x, "target": dr_y, "weight": weight}
-    
+ 
     def __get_dx_edge_list_item(self, edge_item):
         edge = edge_item[0]
         if edge not in self.dx_edge_to_date_dict:
