@@ -1,0 +1,9 @@
+pandas
+numpy
+networkx
+gender-guesser
+tqdm
+
+# local package
+-e .
+
