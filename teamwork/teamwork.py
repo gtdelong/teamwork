@@ -11,6 +11,8 @@ have gained experience working together as part of the care team.
 import pandas as pd
 import networkx as nx
 import numpy as np
+from tqdm import tqdm
+from datetime import timedelta
 
 pd.options.mode.chained_assignment = None  # default='warn'
 
@@ -35,16 +37,19 @@ class TeamworkCorpus:
     def __init__(self, notes_df, teamwork_window=90, team_window=2, **columns):
         self.columns = {**default_columns, **columns}
         self.notes_df = notes_df[self.columns.values()]
-        self.TEAMWORK_DELTA = np.timedelta64(teamwork_window, "D")
-        self.TEAM_DELTA = np.timedelta64(team_window, "D")
-
+        # self.TEAMWORK_DELTA = np.timedelta64(teamwork_window, "D")
+        self.TEAMWORK_DELTA = timedelta(days=teamwork_window)
+        # self.TEAM_DELTA = np.timedelta64(team_window, "D")
+        self.TEAM_DELTA = timedelta(days=team_window)
+        print("Preprocessing data...")
         _prepare_note_data(self.notes_df, self.columns, self.TEAM_DELTA)
         """TODO: maybe add optional argument for inital date"""
         self.FIRST_DATE = self.notes_df[self.columns[ADMISSION_DATE]].iloc[0]
-        
+        print("Building experience edge list...")
         self.edge_df = _get_edge_data(
             self.notes_df, self.columns, self.TEAMWORK_DELTA, self.FIRST_DATE
         )
+        print("Building team edge list...")
         self.team_df = _get_team_data(
             self.notes_df, self.columns, self.TEAMWORK_DELTA, self.FIRST_DATE
         )
@@ -55,12 +60,14 @@ class TeamworkCorpus:
         self.edge_to_date_dict = dict()
         self.dx_edge_to_date_dict = dict()
         self.visit_id_to_team_dict = dict()
-        self.edge_df.apply(
+        tqdm.pandas(desc="Building Edge Dictionary")
+        self.edge_df.progress_apply(
             _add_edge_to_dicts, axis="columns", args=(self.edge_to_date_dict,
                                                         self.dx_edge_to_date_dict, 
                                                       self.columns,)
         )
-        self.team_df.apply(
+        tqdm.pandas(desc="Building Team Dictionary")
+        self.team_df.progress_apply(
             _add_team_to_dicts,
             axis="columns",
             args=(
@@ -71,7 +78,7 @@ class TeamworkCorpus:
         )
         self.team_experience_dict = {
             k: self.__get_team_experience(k, v)
-            for (k, v) in self.visit_id_to_edges_dict.items()
+            for (k, v) in tqdm(self.visit_id_to_edges_dict.items())
         }
 
     def __get_edge_list_item(self, edge_item):
@@ -80,12 +87,13 @@ class TeamworkCorpus:
             return None
         (dr_x, dr_y) = edge_item[1]
         arrive_date = edge_item[2]
+
         weight = len(
             [
                 note_day
                 for note_day in self.edge_to_date_dict[edge]
-                if note_day < arrive_date
-                and note_day >= arrive_date - self.TEAMWORK_DELTA
+                if (note_day < arrive_date)
+                and (note_day >= (arrive_date - self.TEAMWORK_DELTA))
             ]
         )
         if weight < 1:
@@ -98,12 +106,13 @@ class TeamworkCorpus:
             return None
         (dr_x, dr_y) = edge_item[1]
         arrive_date = edge_item[2]
+
         weight = len(
             [
                 note_day
                 for note_day in self.dx_edge_to_date_dict[edge]
-                if note_day < arrive_date
-                and note_day >= arrive_date - self.TEAMWORK_DELTA
+                if (note_day < arrive_date)
+                and (note_day >= (arrive_date - self.TEAMWORK_DELTA))
             ]
         )
         if weight < 1:
@@ -118,15 +127,15 @@ class TeamworkCorpus:
             edge_list_df, source="source", target="target", edge_attr="weight"
         )
         
-        dx_edge_list = [self.__get_edge_list_item(edge_item) for edge_item in edge_items]
-        dx_edge_list = [e for e in edge_list if e is not None]
+        dx_edge_list = [self.__get_dx_edge_list_item(edge_item) for edge_item in edge_items]
+        dx_edge_list = [e for e in dx_edge_list if e is not None]
         dx_edge_list_df = pd.DataFrame(dx_edge_list, columns=["source", "target", "weight"])
         dx_g = nx.from_pandas_edgelist(
             dx_edge_list_df, source="source", target="target", edge_attr="weight"
         )
         
         team = self.visit_id_to_team_dict[visit_id]
-        return {"team": team, "graph": g, "dx_graph": dx_g}
+        return {"team": team, "graph": g, "dx_graph": dx_g, "edgelist": edge_list_df, "dx_edgelist": dx_edge_list_df}
 
 
 def _prepare_note_data(notes_df, columns, team_delta):
@@ -139,8 +148,9 @@ def _prepare_note_data(notes_df, columns, team_delta):
     *UPDATE*: added team_condition column (index dx) as new criteria for care team
     """
     visit_id, admit_date, note_date, note_author, team_condition = [*columns.values()]
-    notes_df[NORM_ADMISSION_DATE] = notes_df[admit_date].astype("datetime64[D]")
-    notes_df[NORM_NOTE_DATE] = notes_df[note_date].astype("datetime64[D]")
+
+    notes_df[NORM_ADMISSION_DATE] = notes_df[admit_date].dt.date
+    notes_df[NORM_NOTE_DATE] = notes_df[note_date].dt.date
 
     # removed keep='first'. This was keeping the first duplicate, instead of removing all duplicates. 
     notes_df.drop_duplicates(
@@ -148,8 +158,7 @@ def _prepare_note_data(notes_df, columns, team_delta):
     )
     notes_df.sort_values(admit_date, inplace=True)
     # add indicator column for whether the note author is in the care team
-    notes_df[IS_IN_TEAM] = ((notes_df[note_date] - notes_df[admit_date] <= team_delta) &
-                            notes_df[team_condition])
+    notes_df[IS_IN_TEAM] = ((notes_df[note_date] - notes_df[admit_date] <= team_delta))
 
 def _get_edge_data(notes_df, columns, teamwork_delta, first_date):
     '''
@@ -199,7 +208,7 @@ def _add_team_columns(df, columns, teamwork_delta, first_date):
     Add additional columns and filter out extra rows.
     Used in _get_edge_data and _get_team_data
     '''
-    _, admit_date, _, note_author, team_condition = [*columns.values()]
+    _, admit_date, _, note_author, _ = [*columns.values()]
     author_x = f"{note_author}_x"
     author_y = f"{note_author}_y"
 
@@ -235,7 +244,7 @@ def _add_edge_to_dicts(edge_record, edge_to_date_dict, dx_edge_to_date_dict, col
     edge_to_date_dict.setdefault(edge_record[EDGE], []).append(
         edge_record[NORM_NOTE_DATE]
     )
-    if (edge_record[team_condition]): 
+    if edge_record[team_condition] == True: 
         dx_edge_to_date_dict.setdefault(edge_record[EDGE], []).append(edge_record[NORM_NOTE_DATE]
                                                                      )
 

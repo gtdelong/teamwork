@@ -19,30 +19,25 @@ pip install teamwork
 ## Usage
 
 ```python
-from teamwork.teamwork import TeamworkStudyRunner
 import pandas as pd
+from teamwork import teamwork as tw
 
 # read medical notes (3 columns) into pandas DataFrame
-notes_df = pd.read_csv("notes_file.csv", parse_dates=[2])
-# enforce column names
-notes_df.columns = ['discharge_id', 'dr', 'date']
+test_df = pd.read_csv('../data/sample_notes.csv')
+# enforce date columns
+test_df['date'] = pd.to_datetime(test_df['date'])
+test_df['arrive_date'] = pd.to_datetime(test_df['arrive_date'])
 # set a 90 day window to find collaboration among care teams
 WINDOW = 90
 # identify care teams within 2 day increments 
 STEP = 2
 
-# the study runner is a generator
-get_care_dates = teamwork.TeamworkStudyRunner(notes_df, WINDOW, STEP)
-
-# gather care teams into a list
-care_team_list = [care_team for care_date in get_care_dates for care_team in care_date]
+corpus = tw.TeamworkCorpus(test_df)
 
 # now you can do something with the care team network graph
-for care_team in care_team_list:
-    analyze_graph(care_team.G)
+for visit_id, item in corpus.team_experience_dict.items():
+    print(item['graph'])
 ```
-
-A sample study can be found [here](https://github.com/gtdelong/teamwork/blob/main/notebooks/teamwork_study.ipynb)
 
 ## Contributors
 

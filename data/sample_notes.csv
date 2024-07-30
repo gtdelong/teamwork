@@ -1,0 +1,13 @@
+age,arrive_date,date,discharge_date,disposition,dr,hf,id,patient
+75,2019-01-01 00:00:00,2019-01-01 19:15:00,2019-01-01,1,Brad Palmer,True,0,patient1
+68,2019-01-24 00:00:00,2019-01-24 10:19:00,2019-01-24,0,Albert Romero,False,1,patient2
+68,2019-01-24 00:00:00,2019-01-24 17:09:00,2019-01-24,0,Margie Meyer,False,1,patient2
+68,2019-01-24 00:00:00,2019-01-24 16:48:00,2019-01-24,0,Evan Frazier,False,1,patient2
+71,2019-02-14 00:00:00,2019-02-14 20:58:00,2019-02-14,0,Albert Romero,True,2,patient3
+71,2019-02-14 00:00:00,2019-02-14 15:54:00,2019-02-14,0,Margie Meyer,True,2,patient3
+66,2019-04-15 19:15:00,2019-04-16 01:29:00,2019-04-15,0,Albert Romero,True,6,patient4
+66,2019-04-15 19:15:00,2019-04-15 20:19:00,2019-04-15,0,Margie Meyer,True,6,patient4
+66,2019-04-15 19:15:00,2019-04-16 04:43:00,2019-04-15,0,Evan Frazier,True,6,patient4
+66,2019-04-15 19:15:00,2019-04-18 21:23:00,2019-04-15,0,Myrtle George,True,6,patient4
+66,2019-04-15 19:15:00,2019-04-16 07:00:00,2019-04-15,0,Victoria Washington,True,6,patient4
+69,2019-08-15 00:00:00,2019-08-15 17:07:00,2019-08-15,1,Neil Mitchell,False,7,patient5
