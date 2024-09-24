@@ -3,6 +3,7 @@ numpy
 networkx
 gender-guesser
 tqdm
+jupyter
 
 # local package
 -e .

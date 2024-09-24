@@ -79,6 +79,7 @@ class TeamworkCorpus:
         self.team_experience_dict = {
             k: self.__get_team_experience(k, v)
             for (k, v) in tqdm(self.visit_id_to_edges_dict.items())
+            if k
         }
 
     def __get_edge_list_item(self, edge_item):
@@ -120,6 +121,8 @@ class TeamworkCorpus:
         return {"source": dr_x, "target": dr_y, "weight": weight}
 
     def __get_team_experience(self, visit_id, edge_items):
+        if not visit_id or visit_id == np.float64(np.nan):
+            print("visit_id is NAN")
         edge_list = [self.__get_edge_list_item(edge_item) for edge_item in edge_items]
         edge_list = [e for e in edge_list if e is not None]
         edge_list_df = pd.DataFrame(edge_list, columns=["source", "target", "weight"])
@@ -133,8 +136,12 @@ class TeamworkCorpus:
         dx_g = nx.from_pandas_edgelist(
             dx_edge_list_df, source="source", target="target", edge_attr="weight"
         )
-        
-        team = self.visit_id_to_team_dict[visit_id]
+        try:
+            team = self.visit_id_to_team_dict[visit_id]
+        except Exception as e:
+            print(type(visit_id))
+            print(f'{visit_id} {edge_items}')
+            print(e)
         return {"team": team, "graph": g, "dx_graph": dx_g, "edgelist": edge_list_df, "dx_edgelist": dx_edge_list_df}
 
 
@@ -232,6 +239,11 @@ def _add_team_to_dicts(
     author_x = f"{note_author}_x"
     author_y = f"{note_author}_y"
     edge_tup = (edge_record[author_x], edge_record[author_y])
+
+    
+    # if not bool(edge_record[visit_id]):
+    #     print()
+    #     return
     
     # store edge, individual note author names, and arrive date in list item
     edge_list_item = (edge_record[EDGE], edge_tup, edge_record[NORM_ADMISSION_DATE])

@@ -52,5 +52,5 @@ geckodriver.log
 .history
 .vscode
 
-test_1
+.venv
 
